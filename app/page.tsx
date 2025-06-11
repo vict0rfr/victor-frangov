@@ -1,103 +1,126 @@
-import Image from "next/image";
+"use client"
 
-export default function Home() {
+import type React from "react"
+
+import { useState, useRef, useEffect } from "react"
+
+export default function PaintApp() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [statusText, setStatusText] = useState("Inserts text bla bla bla")
+  const [coords, setCoords] = useState({ x: 0, y: 0 })
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return
+
+    // Set canvas to white background
+    ctx.fillStyle = "#ffffff"
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+  }, [])
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const rect = canvasRef.current?.getBoundingClientRect()
+    if (!rect) return
+
+    const x = Math.round(e.clientX - rect.left)
+    const y = Math.round(e.clientY - rect.top)
+    setCoords({ x, y })
+  }
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="flex flex-col h-screen bg-[#bfbfbf] select-none">
+      {/* Title bar */}
+      <div className="flex items-center bg-[#010080] text-white px-2 py-0.5">
+        <div className="flex items-center gap-1">
+          <div className="w-4 h-4 bg-[#bfbfbf] flex items-center justify-center border border-white">
+            <span className="text-[10px] text-black font-bold">P</span>
+          </div>
+          <span className="text-sm">Victor Frangov - Paint</span>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+        <div className="ml-auto flex">
+          <button className="w-5 h-4 bg-[#bfbfbf] border-t border-l border-r border-[#ffffff] border-b-[#464646] flex items-center justify-center">
+            <div className="w-2 h-0.5 bg-black"></div>
+          </button>
+          <button className="w-5 h-4 bg-[#bfbfbf] border-t border-l border-r border-[#ffffff] border-b-[#464646] flex items-center justify-center mx-0.5">
+            <div className="w-3 h-3 border border-black"></div>
+          </button>
+          <button className="w-5 h-4 bg-[#bfbfbf] border-t border-l border-r border-[#ffffff] border-b-[#464646] flex items-center justify-center">
+            <div className="w-3 h-3 flex items-center justify-center">
+              <div className="w-2 h-2 bg-black"></div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      {/* Menu bar */}
+      <div className="flex bg-[#bfbfbf] text-black text-sm px-1 py-0.5 border-b border-[#7f7f7f]">
+        <button className="px-2 hover:bg-[#010080] hover:text-white">File</button>
+        <button className="px-2 hover:bg-[#010080] hover:text-white">Edit</button>
+        <button className="px-2 hover:bg-[#010080] hover:text-white">View</button>
+        <button className="px-2 hover:bg-[#010080] hover:text-white">Image</button>
+        <button className="px-2 hover:bg-[#010080] hover:text-white">Options</button>
+        <button className="px-2 hover:bg-[#010080] hover:text-white">Help</button>
+      </div>
+
+      {/* Main content area */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Left toolbar */}
+        <div className="w-16 bg-[#bfbfbf] border-r border-[#7f7f7f] flex flex-col">
+          <div className="grid grid-cols-2 p-1">
+            {Array(16)
+              .fill(0)
+              .map((_, i) => (
+                <div
+                  key={i}
+                  className={`w-6 h-6 border border-t-[#ffffff] border-l-[#ffffff] border-r-[#5b5b5b] border-b-[#5b5b5b] ${i === 0 ? "bg-white" : ""}`}
+                >
+                  {i === 0 && (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <div className="w-3 h-3 bg-black"></div>
+                    </div>
+                  )}
+                </div>
+              ))}
+          </div>
+        </div>
+
+        {/* Canvas area */}
+        <div className="flex-1 bg-[#8e8e8e] p-1 overflow-auto">
+          <canvas
+            ref={canvasRef}
+            width={800}
+            height={600}
+            className="bg-white border border-black"
+            onMouseMove={handleMouseMove}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        </div>
+      </div>
+
+      {/* Color palette */}
+      <div className="h-8 bg-[#bfbfbf] border-t border-[#7f7f7f] flex">
+        <div className="grid grid-cols-14 h-full">
+          {Array(28)
+            .fill(0)
+            .map((_, i) => (
+              <div
+                key={i}
+                className={`w-4 h-4 border border-t-[#ffffff] border-l-[#ffffff] border-r-[#5b5b5b] border-b-[#5b5b5b] ${i === 0 ? "bg-black" : ""}`}
+              />
+            ))}
+        </div>
+      </div>
+
+      {/* Status bar */}
+      <div className="h-6 bg-[#bfbfbf] border-t border-[#7f7f7f] flex items-center px-1 text-xs">
+        <div className="border border-inset bg-[#d9d9d9] px-2 py-0.5 flex-1">{statusText}</div>
+        <div className="border border-inset bg-[#d9d9d9] px-2 py-0.5 ml-1 w-24">
+          coords {coords.x},{coords.y}
+        </div>
+        <div className="border border-inset bg-[#d9d9d9] px-2 py-0.5 ml-1 w-16">random</div>
+      </div>
     </div>
-  );
+  )
 }
