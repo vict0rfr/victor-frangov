@@ -24,3 +24,49 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.border-win95 {
+  position: relative;
+  border-top: 2px solid #79797B;    /* outer gray */
+  border-left: 2px solid #79797B;   /* outer gray */
+  border-bottom: 2px solid #fff;    /* outer white */
+  border-right: 2px solid #fff;     /* outer white */
+  box-sizing: border-box;
+}
+
+.border-win95::before {
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  border-top: 2px solid #222;      /* inner black */
+  border-left: 2px solid #222;     /* inner black */
+  pointer-events: none;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+.border-win95-rotated {
+  position: relative;
+  border-top: 2px solid #cccccc;         /* outer white */
+  border-left: 2px solid #cccccc;        /* outer white */
+  border-bottom: 2px solid #222;   /* outer gray */
+  border-right: 2px solid #222;    /* outer gray */
+  box-sizing: border-box;
+}
+
+.border-win95-rotated::before {
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  border-bottom: 2px solid #79797B;      /* inner black */
+  border-right: 2px solid #79797B;       /* inner black */
+  pointer-events: none;
+  z-index: 1;
+  box-sizing: border-box;
+}

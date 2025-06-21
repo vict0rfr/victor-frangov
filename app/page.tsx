@@ -36,7 +36,7 @@ export default function PaintApp() {
       <div className="flex items-center bg-[#010080] text-white px-2 py-0.5">
         <div className="flex items-center gap-1">
           <div className="w-4 h-4 bg-[#bfbfbf] flex items-center justify-center border border-white">
-            <span className="text-[10px] text-black font-bold">P</span>
+            <img src="/logo.svg" alt="Logo" className="w-3 h-3" />
           </div>
           <span className="text-sm">Victor Frangov - Paint</span>
         </div>
@@ -68,20 +68,20 @@ export default function PaintApp() {
       {/* Main content area */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left toolbar */}
-        <div className="w-16 bg-[#bfbfbf] border-r border-[#7f7f7f] flex flex-col">
-          <div className="grid grid-cols-2 p-1">
+        <div className="w-20 bg-[#bfbfbf] border-r border-[#7f7f7f] flex flex-col">
+          <div className="grid grid-cols-2">
             {Array(16)
               .fill(0)
               .map((_, i) => (
                 <div
                   key={i}
-                  className={`w-6 h-6 border border-t-[#ffffff] border-l-[#ffffff] border-r-[#5b5b5b] border-b-[#5b5b5b] ${i === 0 ? "bg-white" : ""}`}
+                  className={`w-8 h-8 border-win95-rotated ${i === 0 ? "bg-white" : ""}`}
                 >
-                  {i === 0 && (
+                  {/* {i === 0 && (
                     <div className="w-full h-full flex items-center justify-center">
                       <div className="w-3 h-3 bg-black"></div>
                     </div>
-                  )}
+                  )} */}
                 </div>
               ))}
           </div>
@@ -100,24 +100,32 @@ export default function PaintApp() {
       </div>
 
       {/* Color palette */}
-      <div className="h-8 bg-[#bfbfbf] border-t border-[#7f7f7f] flex">
-        <div className="grid grid-cols-14 h-full">
+      <div className="h-20 bg-[#bfbfbf] border-[#7f7f7f] flex">
+        <div className="p-2">
+          <div className="relative w-[60px] h-[60px] bg-[#D9D9D9] border-win95">
+            {/* Black square */}
+            <div className="absolute left-[22px] top-[22px] w-7 h-7 bg-black" />
+            {/* White square */}
+            <div className="absolute left-[8px] top-[8px] w-7 h-7 bg-white" />
+          </div>
+        </div>
+        <div className="grid grid-cols-14 h-full gap-[1.5] pt-1">
           {Array(28)
             .fill(0)
             .map((_, i) => (
               <div
                 key={i}
-                className={`w-4 h-4 border border-t-[#ffffff] border-l-[#ffffff] border-r-[#5b5b5b] border-b-[#5b5b5b] ${i === 0 ? "bg-black" : ""}`}
+                className={`w-8 h-8 border-win95 ${i === 0 ? "bg-black" : ""}`}
               />
             ))}
         </div>
       </div>
 
       {/* Status bar */}
-      <div className="h-6 bg-[#bfbfbf] border-t border-[#7f7f7f] flex items-center px-1 text-xs">
+      <div className="h-8 bg-[#bfbfbf] border-t border-[#7f7f7f] flex items-center px-1 text-xs text-black">
         <div className="border border-inset bg-[#d9d9d9] px-2 py-0.5 flex-1">{statusText}</div>
         <div className="border border-inset bg-[#d9d9d9] px-2 py-0.5 ml-1 w-24">
-          coords {coords.x},{coords.y}
+          {coords.x},{coords.y}
         </div>
         <div className="border border-inset bg-[#d9d9d9] px-2 py-0.5 ml-1 w-16">random</div>
       </div>
